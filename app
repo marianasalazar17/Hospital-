@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
  
-app = Flask(__name__)
+app = Flask(hospital)
  
 # Documentos requeridos segun el checklist de cada perfil/puesto.
 # La ficha del reto indica que RRHH proporcionara las plantillas reales;

@@ -1,8 +1,8 @@
 # Tarea 2: Estructuras de decisión - Expedientes Digitales (Hospital de Diagnóstico)
 
-Programa en Flask que evalúa el estado de un expediente digital de un empleado según los documentos del checklist correspondiente a su perfil. Forma parte del reto "Expedientes digitales: modernizando el ingreso de personal en RRHH".
+Programa en Flask que evalúa el estado de un expediente digital de un empleado según los documentos del checklist correspondiente a su perfil/puesto. Forma parte del reto "Expedientes digitales: modernizando el ingreso de personal en RRHH".
 
-**Integrantes:** Mariana Salazar ([marianasalazar17]) y Fiorella Funes (Fiore463])
+**Integrantes:** [Nombre 1] ([usuario GitHub 1]) y [Nombre 2] ([usuario GitHub 2])
 
 ## Requisitos
 
@@ -51,25 +51,27 @@ Documentos requeridos por perfil (valores de prueba, hasta recibir las plantilla
 | `administrativo` | 5 |
 | `medico` | 8 |
 
+## Salida en color
+
+La ruta ya no devuelve JSON: devuelve una página HTML con un recuadro de color según el estado del expediente, para que se identifique de un vistazo.
+
+| Estado | Color |
+|---|---|
+| `sin iniciar` | Gris |
+| `incompleto` | Amarillo |
+| `completo` | Verde |
+| `perfil no reconocido` | Rojo |
+
 ## Ejemplos de prueba
 
-| URL | Estado |
-|---|---|
-| `/expediente/Ana/administrativo/0` | sin iniciar |
-| `/expediente/Luis/medico/3` | incompleto |
-| `/expediente/Marta/administrativo/5` | completo |
-| `/expediente/Carlos/medico/8` | completo |
-| `/expediente/Sofia/administrativo/4` | incompleto |
-| `/expediente/Pedro/conserje/2` | perfil no reconocido |
+| URL | Estado | Color |
+|---|---|---|
+| `/expediente/Ana/administrativo/0` | sin iniciar | Gris |
+| `/expediente/Luis/medico/3` | incompleto | Amarillo |
+| `/expediente/Marta/administrativo/5` | completo | Verde |
+| `/expediente/Carlos/medico/8` | completo | Verde |
+| `/expediente/Sofia/administrativo/4` | incompleto | Amarillo |
+| `/expediente/Pedro/conserje/2` | perfil no reconocido | Rojo |
 
-Ejemplo de respuesta para `/expediente/Luis/medico/3`:
+Al abrir por ejemplo `http://127.0.0.1:5000/expediente/Marta/administrativo/5` se muestra el nombre del empleado, el perfil, el conteo de documentos y un recuadro verde con el texto "completo".
 
-```json
-{
-  "documentosRequeridos": 8,
-  "documentosSubidos": 3,
-  "empleado": "Luis",
-  "estado": "incompleto",
-  "perfil": "medico"
-}
-```

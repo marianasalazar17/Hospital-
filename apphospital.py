@@ -1,6 +1,6 @@
 from flask import Flask, render_template_string
  
-app = Flask(hospital)
+app = Flask("hospital")
  
 # Documentos requeridos segun el checklist de cada perfil/puesto.
 # Valores de prueba, hasta recibir las plantillas reales de RRHH.
@@ -59,12 +59,12 @@ def evaluarExpediente(nombreEmpleado, perfil, documentosSubidos):
         ), 400
  
     # Paso 2: comparar lo subido contra el checklist
-    if documentosSubidos == 0:
-        estado = "sin iniciar"
-    elif documentosSubidos < documentosRequeridos:
+   if documentosSubidos >= documentosRequeridos:
+        estado = "completo"
+    elif documentosSubidos > 0:
         estado = "incompleto"
     else:
-        estado = "completo"
+        estado = "sin iniciar"
  
     return render_template_string(
         PLANTILLA,

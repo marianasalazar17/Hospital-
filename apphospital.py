@@ -1,6 +1,6 @@
 from flask import Flask, render_template_string
  
-app = Flask(__name__)
+app = Flask(hospital)
  
 # Documentos requeridos segun el checklist de cada perfil/puesto.
 # Valores de prueba, hasta recibir las plantillas reales de RRHH.

@@ -1,19 +1,45 @@
-from flask import Flask, jsonify
-
-app = Flask(hospital)
-
+from flask import Flask, render_template_string
+ 
+app = Flask(__name__)
+ 
 # Documentos requeridos segun el checklist de cada perfil/puesto.
-# La ficha del reto indica que RRHH proporcionara las plantillas reales;
-# estos valores son de prueba hasta recibirlas.
+# Valores de prueba, hasta recibir las plantillas reales de RRHH.
 DOCUMENTOS_ADMINISTRATIVO = 5
 DOCUMENTOS_MEDICO = 8
-
-
+ 
+# Color asociado a cada estado
+COLORES = {
+    "sin iniciar": "#9e9e9e",       # gris
+    "incompleto": "#f4b400",        # amarillo
+    "completo": "#34a853",          # verde
+    "perfil no reconocido": "#ea4335"  # rojo
+}
+ 
+PLANTILLA = """
+<html>
+<head><title>Estado del expediente</title></head>
+<body style="font-family: Arial; text-align:center; margin-top:60px;">
+    <h2>Expediente de {{ nombreEmpleado }}</h2>
+    <p>Perfil: {{ perfil }}</p>
+    <div style="display:inline-block; padding:15px 30px; border-radius:8px;
+                background-color:{{ color }}; color:white; font-size:22px;">
+        {{ estado }}
+    </div>
+    {% if documentosRequeridos %}
+    <p style="margin-top:20px;">
+        Documentos subidos: {{ documentosSubidos }} / {{ documentosRequeridos }}
+    </p>
+    {% endif %}
+</body>
+</html>
+"""
+ 
+ 
 @app.route("/expediente/<nombreEmpleado>/<perfil>/<int:documentosSubidos>")
 def evaluarExpediente(nombreEmpleado, perfil, documentosSubidos):
     # Recibe el expediente por la ruta y retorna su estado segun el
     # checklist de documentos del perfil/puesto del empleado.
-
+ 
     # Paso 1: determinar cuantos documentos exige el checklist del perfil
     if perfil == "administrativo":
         documentosRequeridos = DOCUMENTOS_ADMINISTRATIVO
@@ -21,12 +47,17 @@ def evaluarExpediente(nombreEmpleado, perfil, documentosSubidos):
         documentosRequeridos = DOCUMENTOS_MEDICO
     else:
         # Caso por defecto: el perfil no tiene checklist definido
-        return jsonify({
-            "empleado": nombreEmpleado,
-            "perfil": perfil,
-            "estado": "perfil no reconocido"
-        }), 400
-
+        estado = "perfil no reconocido"
+        return render_template_string(
+            PLANTILLA,
+            nombreEmpleado=nombreEmpleado,
+            perfil=perfil,
+            estado=estado,
+            color=COLORES[estado],
+            documentosSubidos=None,
+            documentosRequeridos=None
+        ), 400
+ 
     # Paso 2: comparar lo subido contra el checklist
     if documentosSubidos == 0:
         estado = "sin iniciar"
@@ -34,15 +65,17 @@ def evaluarExpediente(nombreEmpleado, perfil, documentosSubidos):
         estado = "incompleto"
     else:
         estado = "completo"
-
-    return jsonify({
-        "empleado": nombreEmpleado,
-        "perfil": perfil,
-        "documentosSubidos": documentosSubidos,
-        "documentosRequeridos": documentosRequeridos,
-        "estado": estado
-    })
-
-
+ 
+    return render_template_string(
+        PLANTILLA,
+        nombreEmpleado=nombreEmpleado,
+        perfil=perfil,
+        estado=estado,
+        color=COLORES[estado],
+        documentosSubidos=documentosSubidos,
+        documentosRequeridos=documentosRequeridos
+    )
+ 
+ 
 if __name__ == "__main__":
     app.run(debug=True)

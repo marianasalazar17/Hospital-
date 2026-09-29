@@ -2,7 +2,7 @@
 
 Programa en Flask que evalúa el estado de un expediente digital de un empleado según los documentos del checklist correspondiente a su perfil/puesto. Forma parte del reto "Expedientes digitales: modernizando el ingreso de personal en RRHH".
 
-**Integrantes:** [Nombre 1] ([usuario GitHub 1]) y [Nombre 2] ([usuario GitHub 2])
+**Integrantes:** Mariana Salazar (marianasalazar17) y Fiorella Funes (Fiore463)
 
 ## Requisitos
 
